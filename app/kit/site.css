@@ -85,7 +85,6 @@
   .engagement > p { margin-bottom: 0; }
   .engagement .ic-grid--mosaic { grid-template-columns: minmax(0, 1fr); }
   .engagement .mosaic > .ic-cell { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4); }
-  .closing__links .footer__col { grid-column: span 4; }
   .closing__cta.close--type > .btn--xl.btn--primary { width: 100%; }
 }
 

@@ -689,13 +689,7 @@ html:not([data-tone="dark"]) :is(.frame--cta, .frame--lit, .footer--statement) {
 
 /* ---------------------------------------------------------------- footer */
 .footer { padding-block: var(--section) var(--s-6); border-top: 1px solid var(--line); }   /* an older footer after the last section; footer.closing (below) replaces it */
-.footer .kit-grid { row-gap: var(--s-7); }
-.footer :is(h3, h4):not(.closing__cta *) { font: 500 var(--t-small)/1.4 var(--font-text); letter-spacing: 0; color: var(--muted); margin-bottom: var(--s-4); }
-.footer ul { display: grid; gap: var(--s-3); font-size: var(--t-small); }
 .footer ul a:hover { color: var(--action); }
-.footer__legal { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); justify-content: space-between;
-                 margin-top: var(--s-8); padding-top: var(--s-5); border-top: 1px solid var(--line);
-                 font-size: var(--t-label); color: var(--muted); }
 .socials { display: flex; gap: var(--s-2); }
 .socials a { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); }
 .socials a:hover { border-color: var(--line-strong); }
@@ -704,13 +698,7 @@ html:not([data-tone="dark"]) :is(.frame--cta, .frame--lit, .footer--statement) {
    follows currentColor on every ground. The mask image is set in the tag's style attribute. */
 .icon-mono { display: inline-block; flex: none; width: var(--icon); height: var(--icon); background: currentColor;
              -webkit-mask: center / contain no-repeat; mask: center / contain no-repeat; }
-@media (max-width: 1023px) { .footer .footer__col { grid-column: auto / span 6; } .footer .kit-grid > .span-4 { grid-column: 1 / -1; } }
-@media (min-width: 640px) and (max-width: 1023px) { .footer .footer__col { grid-column: auto / span 3; } }
 
-/* the company block's one line, set in the display face (footer-columns) */
-.footer__lede { font: var(--display-weight) var(--t-h3)/1.25 var(--font-display); letter-spacing: var(--display-tracking); max-width: 22ch; }
-/* the legal row's end: the socials sit right of the copyright line */
-.footer__legal .socials a { width: 32px; height: 32px; }
 
 /* footer types (dealt, sections.md).
    .footer--dark (Figma, x.ai): a dark ground (with .ground-inverse), the name set large top left, the
@@ -729,7 +717,6 @@ html[data-tone="dark"] .footer--dark {
 .footer__nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-8); padding-top: var(--s-5); border-top: 1px solid var(--line); font-weight: 500; }
 .footer__nav a:hover { color: var(--action); }
 .footer__nav .socials { margin-left: auto; }
-.footer--visit .footer__legal { margin-top: var(--s-5); border-top: 0; padding-top: 0; }
 /* .footer--statement: the close and the footer in one inset slab on the page's lit ground (sand,
    sky, sage or painting): one big line, one full-width button, then the columns */
 .footer--statement {
@@ -825,8 +812,6 @@ footer.closing.g2 > .wrap { grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
 .close__word { margin-top: auto; font: var(--display-weight) clamp(64px, 14.5vw, 216px)/.86 var(--font-display); letter-spacing: -0.045em;
                white-space: nowrap; overflow: clip; color: var(--ink); }
 .closing__links { display: grid; gap: var(--s-7); }
-.closing__links > .footer__legal { margin-top: 0; }
-.closing__links .footer__lede { font-size: var(--t-lead); max-width: 30ch; }
 /* a phone: a close with a photograph takes a screen of its own (the photograph fills what the words
    leave) and the links the next; a close in type stays one screen with its links */
 @media (max-width: 639px) {
@@ -837,8 +822,6 @@ footer.closing.g2 > .wrap { grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
 @media (max-width: 639px) {
   footer.closing > .wrap { row-gap: var(--s-7); }
   .closing__links { gap: var(--s-5); }
-  .closing__links > .kit-grid { row-gap: var(--s-5); }
-  .closing__links .footer__col { grid-column: auto / span 6; }
   .closing__cta > .close__media { min-height: 140px; }
   .close__word { font-size: clamp(56px, 19vw, 96px); }
 }
@@ -852,10 +835,10 @@ footer.closing.g2 > .wrap { grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
   :is(a, button).pill { height: auto; }
   .footer ul:has(> li > a) { gap: 0; }
   .footer ul:has(> li > a) > li:not(:has(> a)) { display: flex; align-items: center; min-height: 44px; }
-  :is(.footer ul, .footer__legal, .footer__nav) a:not(.btn) { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+  :is(.footer ul, .footer__nav) a:not(.btn) { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
   /* a block, not a flex row: "Credits" stays on the line after the sources instead of wrapping alone */
   .credits > summary { display: block; min-height: 44px; padding-block: 12px; line-height: 20px; }
-  .socials a, .footer__legal .socials a { width: 44px; height: 44px; }
+  .socials a { width: 44px; height: 44px; }
 }
 
 /* ---------------------------------------------------------------- the big close (closing-type) */
