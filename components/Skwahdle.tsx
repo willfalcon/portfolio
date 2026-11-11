@@ -4,7 +4,7 @@ import { skwahdle } from '@/app/content';
 export default function Skwahdle() {
   return (
     <section className="section g2m" id="skwahdle" aria-labelledby="skwahdle-h">
-      <div className="wrap grid grid--top">
+      <div className="wrap kit-grid grid--top">
         <div className="span-6 stack-5">
           <h2 id="skwahdle-h">{skwahdle.title}</h2>
           <p className="t-lead">{skwahdle.lead}</p>

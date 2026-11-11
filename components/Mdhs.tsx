@@ -9,7 +9,7 @@ import { responsive } from './img';
 export default function Mdhs() {
   return (
     <section className="section" id="mdhs" aria-labelledby="mdhs-h">
-      <div className="wrap grid mdhs__grid" data-peek="">
+      <div className="wrap kit-grid mdhs__grid" data-peek="">
         <div className="group mdhs__group">
           <h2 id="mdhs-h" className="mdhs__title">{mdhs.title}</h2>
           <p className="mdhs__lead">{mdhs.lead}</p>

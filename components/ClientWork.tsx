@@ -20,7 +20,7 @@ export default function ClientWork() {
   const [first, ...rest] = clientWork.rows;
   return (
     <section className="section ground-surface g2m" id="clients" aria-labelledby="clients-h">
-      <div className="wrap grid clients__grid">
+      <div className="wrap kit-grid clients__grid">
         <div className="group clients__group">
           <div className="section-head span-12">
             <h2 id="clients-h">{clientWork.title}</h2>

@@ -5,7 +5,7 @@ import IconMosaic from './IconMosaic';
 export default function About() {
   return (
     <section className="section g2m" id="about" aria-labelledby="about-h">
-      <div className="wrap grid grid--top">
+      <div className="wrap kit-grid grid--top">
         <div className="span-5 stack-5">
           <h2 id="about-h">{about.title}</h2>
           {about.body.map(p => <p className="t-lead" key={p.slice(0, 20)}>{p}</p>)}

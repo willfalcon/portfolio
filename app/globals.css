@@ -20,7 +20,7 @@
 /* kit class names that are also Tailwind utilities: while the kit owns them, Tailwind must not generate them
    (.grid would become a bare display:grid in the utilities layer and beat the kit's own overrides; .start-7
    would become inset-inline-start). Drop a name from this list once the kit rule for it is gone. */
-@source not inline("{grid,container,start-{1,2,3,4,5,6,7,8,9,10}}");
+@source not inline("{container,start-{1,2,3,4,5,6,7,8,9,10}}");
 
 @import "./kit/system.css" layer(kit);
 @import "./kit/cards.css" layer(kit);
@@ -117,6 +117,8 @@
   --text-stat--line-height: 1;
   --text-hero: var(--ly-h1);
   --text-hero-lead: var(--ly-lead);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
   --font-weight-display: var(--display-weight);
   --tracking-display: var(--display-tracking);
   --tracking-display-xl: var(--display-tracking-xl);
@@ -137,6 +139,11 @@
   --ease-enter: var(--m-ease-enter);
   --default-transition-duration: var(--dur);
   --default-transition-timing-function: var(--ease);
+}
+
+/* stack-N: the kit's vertical rhythm, the N-th spacing step between a block's children (margin on the later one) */
+@utility stack-* {
+  & > * + * { margin-top: --value(--spacing-*); }
 }
 
 /* dark: the kit's strategy is a ground, not a media query. system.js sets <html data-tone="dark"> on a dark page,

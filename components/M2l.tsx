@@ -6,7 +6,7 @@ import { responsive } from './img';
 export default function M2l() {
   return (
     <section className="section g2m" id="m2l" aria-labelledby="m2l-h">
-      <div className="wrap grid grid--top">
+      <div className="wrap kit-grid grid--top">
         <div className="span-5 stack-5">
           <h2 id="m2l-h">{m2l.title}</h2>
           <p className="t-lead">{m2l.lead}</p>

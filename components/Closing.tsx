@@ -13,7 +13,7 @@ export default function Closing() {
           <a className="btn btn--primary btn--xl" href={contact.email}>Email me<Arrow /></a>
         </div>
         <div className="closing__links">
-          <div className="grid">
+          <div className="kit-grid">
             <div className="span-4 stack-4">
               <a className="nav__logo" href="#top"><span className="mark" data-mark="dots" aria-hidden="true" />Will Hawks</a>
               <p className="footer__lede">{closing.lede}</p>

@@ -20,7 +20,7 @@ export default function Nav() {
           <div className="nav__item">
             <a className="nav__link" href="#mdhs">Work <Chev /></a>
             <div className="nav__menu">
-              <div className="wrap grid">
+              <div className="wrap kit-grid">
                 <div className="menu-col span-3">
                   <p className="t-label">Projects</p>
                   <a href="#mdhs">MDHS<span>State agency site and blocks</span></a>

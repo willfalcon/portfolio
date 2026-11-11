@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section className="hero hero--split" data-enter="" aria-labelledby="hero-h">
       <div className="wrap">
-        <div className="hero-text grid hero__grid">
+        <div className="hero-text kit-grid hero__grid">
           <div className="hero__text span-5">
             <p className="hero__kicker"><span className="dot" aria-hidden="true" />{hero.kicker}</p>
             <h1 id="hero-h">{hero.title}</h1>
