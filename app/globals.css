@@ -1,0 +1,345 @@
+/*
+  The site's one stylesheet: Tailwind v4 over the design kit's tokens.
+
+  Layers, lowest to highest:
+    theme      Tailwind's theme variables (only the fonts are defined there; see @theme below)
+    base       the kit's tokens (the source of truth), its grounds and its reset (ported from system.css)
+    kit        the old kit stylesheets, unchanged apart from their token blocks, kept loaded until every
+               component that depends on them is converted (app/kit/*.css). Shrinks as components move over.
+    components the few patterns that repeat or that utilities cannot express (selectors, pseudo-elements)
+    utilities  Tailwind utilities: they beat everything above, so a converted element never fights the kit
+
+  Tailwind's preflight is not imported: the kit's own reset is in @layer base, so the page keeps its exact look.
+*/
+@layer theme, base, kit, components, utilities;
+
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+/* class names come from the components only (not the kit's JS or the docs) */
+@source "../components/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";
+/* kit class names that are also Tailwind utilities: while the kit owns them, Tailwind must not generate them
+   (.grid would become a bare display:grid in the utilities layer and beat the kit's own overrides; .start-7
+   would become inset-inline-start). Drop a name from this list once the kit rule for it is gone. */
+@source not inline("{grid,container,start-{1,2,3,4,5,6,7,8,9,10}}");
+
+@import "./kit/system.css" layer(kit);
+@import "./kit/cards.css" layer(kit);
+@import "./kit/motion.css" layer(kit);
+@import "./kit/layout.css" layer(kit);
+@import "./kit/icon.css" layer(kit);
+@import "./kit/site.css" layer(kit);
+
+/* ---------------------------------------------------------------- Tailwind theme
+   Only the kit's values exist (no Tailwind default theme is imported), so a utility can only use a token.
+   The fonts keep the kit's own names (--font-display, --font-text, --font-mono). Every other token keeps its
+   kit name on :root (below) and is mapped here with `inline`, so a utility writes var(--kit-name) and picks up
+   the value of the ground or breakpoint it sits in (--bg on .ground-surface, --gut on a phone...). */
+@layer theme {
+  @theme static {
+    --font-display: "Schibsted Grotesk", system-ui, sans-serif;
+    --font-text: "Schibsted Grotesk", system-ui, sans-serif;
+    --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+}
+
+@theme inline {
+  /* breakpoints: the kit's media queries. phone < sm(640) <= tablet < lg(1024) <= laptop < xl(1280) <= desktop.
+     xs mirrors the kit's (max-width: 479px); one-off widths (720, 800) are written as min-[800px]: */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* colours: the ground tokens (each ground re-sets them, so bg-bg on .ground-surface is the surface colour) */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-action: var(--action);
+  --color-action-ink: var(--action-ink);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  /* spacing: the kit's 4/8 scale keeps its index (p-5 is --s-5, 24px; not Tailwind's 20px), plus the named
+     layout lengths. There is no --spacing multiplier, so an off-scale number (p-13) does not exist. */
+  --spacing-px: 1px;
+  --spacing-0: 0px;
+  --spacing-1: var(--s-1);
+  --spacing-2: var(--s-2);
+  --spacing-3: var(--s-3);
+  --spacing-4: var(--s-4);
+  --spacing-5: var(--s-5);
+  --spacing-6: var(--s-6);
+  --spacing-7: var(--s-7);
+  --spacing-8: var(--s-8);
+  --spacing-9: var(--s-9);
+  --spacing-10: var(--s-10);
+  --spacing-nav: var(--nav);
+  --spacing-padt: var(--padt);
+  --spacing-padb: var(--padb);
+  --spacing-hgap: var(--hgap);
+  --spacing-hpadb: var(--hpadb);
+  --spacing-bar: var(--bar);
+  --spacing-gut: var(--gut);
+  --spacing-gutter: var(--gutter);
+  --spacing-head-gap: var(--head-gap);
+  --spacing-card-pad: var(--card-pad);
+  --spacing-card-gap: var(--card-gap);
+  --spacing-btn-h: var(--btn-h);
+  --spacing-btn-h-sm: var(--btn-h-sm);
+  --spacing-icon: var(--icon);
+  --container-wrap: var(--container);
+
+  /* type scale: the kit's sizes with the line height (and weight, tracking) each one is set with */
+  --text-label: var(--t-label);
+  --text-label--line-height: 1.4;
+  --text-label--font-weight: 500;
+  --text-label--letter-spacing: 0.01em;
+  --text-small: var(--t-small);
+  --text-small--line-height: 1.5;
+  --text-body: var(--t-body);
+  --text-body--line-height: 1.55;
+  --text-lead: var(--t-lead);
+  --text-lead--line-height: 1.5;
+  --text-card: var(--t-card);
+  --text-card--line-height: 1.3;
+  --text-card--letter-spacing: -0.01em;
+  --text-h3: var(--t-h3);
+  --text-h3--line-height: 1.2;
+  --text-h2: var(--t-h2);
+  --text-h2--line-height: 1.1;
+  --text-h1: var(--t-h1);
+  --text-h1--line-height: 1.04;
+  --text-stat: var(--t-stat);
+  --text-stat--line-height: 1;
+  --text-hero: var(--ly-h1);
+  --text-hero-lead: var(--ly-lead);
+  --font-weight-display: var(--display-weight);
+  --tracking-display: var(--display-tracking);
+  --tracking-display-xl: var(--display-tracking-xl);
+
+  /* radius */
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-btn: var(--r-btn);
+
+  /* shadows the kit draws (the collage pieces, the pause disc, the icon tiles) */
+  --shadow-piece: 0 1px 2px rgb(0 0 0 / .08), 0 18px 40px -18px rgb(0 0 0 / .32);
+  --shadow-disc: 0 1px 2px rgb(0 0 0 / .12), 0 4px 12px -4px rgb(0 0 0 / .28);
+
+  /* motion: the one UI ease and duration (a bare `transition` uses them) */
+  --ease-ui: var(--ease);
+  --ease-io: var(--m-ease-io);
+  --ease-enter: var(--m-ease-enter);
+  --default-transition-duration: var(--dur);
+  --default-transition-timing-function: var(--ease);
+}
+
+/* dark: the kit's strategy is a ground, not a media query. system.js sets <html data-tone="dark"> on a dark page,
+   and a section opts into the inverse palette with .ground-inverse. This site is light; the variant is here so
+   dark: means what the kit means by it. */
+@custom-variant dark (&:where([data-tone="dark"], [data-tone="dark"] *));
+/* the kit moves things on hover only for a fine pointer (a phone never keeps a stuck hover) */
+@custom-variant hover-fine (@media (hover: hover) and (pointer: fine) { &:hover });
+/* <html data-motion="off"> switches the motion layer off */
+@custom-variant motion (html:not([data-motion="off"]) &);
+
+/* ---------------------------------------------------------------- tokens (the source of truth) */
+@layer base {
+  :root {
+    /* palette: rose-grey-green (hex only; system.js reads --bg --surface --ink --muted --accent --accent-ink) */
+    --p-bg: #ebe5e3;
+    --p-surface: #e1dad7;
+    --p-ink: #2b2622;
+    --p-muted: #655c58;
+    --p-accent: #0f7d45;
+    --p-accent-ink: #ffffff;
+    --p-action: #0f7d45;      /* buttons, links, focus */
+    --p-action-ink: #ffffff;
+    --p-inv-bg: #2b2622;
+    --p-inv-surface: #36312d;
+    --p-inv-ink: #ebe5e3;
+    --p-inv-muted: #a29c99;
+    --p-inv-accent: #ebe5e3;
+    --p-inv-accent-ink: #2b2622;
+    --p-inv-action: #ebe5e3;
+    --p-inv-action-ink: #2b2622;
+    /* the lit ground (sand; the kit's default) behind UI and in a closing band */
+    --ground-bg: #d9ccb7; --ground-surface: #e9e0d2; --ground-ink: #2a2622; --ground-muted: #5a534a; --ground-accent: #a8794a;
+
+    /* type: Schibsted Grotesk (the fonts themselves are in @theme above) */
+    --display-weight: 400;
+    --display-tracking: -0.035em;
+    --display-tracking-xl: -0.042em;
+
+    /* the page rhythm (references/layout-v4.md): one section per screen. The header is fixed and
+       --nav tall; every section is padded --padt above and --padb (plus the phone action bar, --bar)
+       below. The hero's words start --hgap under the header and its content ends --hpadb above the fold. */
+    --nav: 72px;
+    --padt: 120px;
+    --padb: 72px;
+    --hgap: 48px;
+    --hpadb: 64px;
+    --bar: 0px;
+    /* grid: one .wrap for the header, every section and the footer, the same --gut on both sides */
+    --container: 1280px;
+    --gut: 80px;
+    --pad: var(--gut);
+    --gutter: 24px;
+
+    /* spacing: 4/8 scale */
+    --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 24px;
+    --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+    --section: 40px;
+    --section-band: 56px;
+    --head-gap: 48px;     /* the one heading-to-content gap, 32 on a phone */
+    --card-pad: 16px;
+    --card-gap: 16px;
+
+    /* type scale (the only sizes on the page) */
+    --t-label: 13px;
+    --t-small: 14px;
+    --t-body: 16px;
+    --t-lead: 18px;
+    --t-card: 18px;
+    --t-h3: 24px;
+    /* straight lines from the phone size at 390 to the desktop size at 1440 */
+    --t-h2: clamp(30px, 1.72vw + 23.3px, 48px);
+    --t-h1: clamp(38px, 3.24vw + 25.4px, 72px);
+    --t-stat: clamp(28px, .952vw + 24.29px, 38px);
+
+    /* radius: the soft set (<html data-radius="soft">) */
+    --r-sm: 8px;  --r-md: 12px; --r-lg: 20px; --r-btn: 8px;
+
+    /* controls */
+    --btn-h: 44px;
+    --btn-h-sm: 36px;
+    --nav-h: var(--nav);
+    --icon: 16px;
+
+    /* motion: the one UI ease-out */
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --dur: 180ms;
+    --m-in: 150ms;                              /* hover in: buttons, links, nav, tabs */
+    --m-out: 120ms;                             /* hover out */
+    --m-press: 90ms;                            /* a press */
+    --m-panel: 200ms;                           /* a menu or sheet opening */
+    --m-close: 120ms;                           /* a menu closing */
+    --m-slide: 240ms;                           /* an indicator travelling between two tabs or links */
+    --m-image: 600ms;                           /* a photograph scaling inside its mask */
+    --m-image-out: 400ms;                       /* ...and settling back */
+    --m-ease: var(--ease, cubic-bezier(.2, .8, .2, 1));
+    --m-ease-io: cubic-bezier(.65, 0, .35, 1);  /* the indicator: leaves and lands softly */
+    --m-ease-enter: cubic-bezier(.22, 1, .36, 1); /* an entrance settling */
+    --m-cycle: 3.2s;
+    --m-lift: -2px;
+
+    /* layout (layout.css): one screen under the header, and the hero's display sizes */
+    --ly-nav: var(--nav, 72px);
+    --ly-screen: calc(100svh - var(--ly-nav));
+    --ly-pad: var(--padt, 120px);
+    --ly-hero-pad: var(--hgap, 48px);
+    --ly-head-gap: var(--head-gap, 48px);
+    --ly-fit: calc(100svh - var(--padt, 120px) - var(--padb, 72px) - var(--bar, 0px));
+    --ly-hero-h: calc(100svh - var(--nav, 72px) - var(--hgap, 48px) - var(--hpadb, 64px) - var(--bar, 0px));
+    --ly-scale: 0.98;   /* Schibsted's optical size against the default grotesk */
+    --ly-h1:       calc(var(--ly-scale) * clamp(40px, 3.048vw + 28.11px, 72px));    /* 72 / 40: split */
+    --ly-h1-xl:    calc(var(--ly-scale) * clamp(44px, 3.429vw + 30.63px, 80px));
+    --ly-h1-col:   calc(var(--ly-scale) * clamp(40px, 2.286vw + 31.09px, 64px));
+    --ly-h1-mega:  calc(var(--ly-scale) * clamp(56px, 9.524vw + 18.86px, 156px));
+    --ly-h1-word:  calc(var(--ly-scale) * clamp(54px, 8.571vw + 20.57px, 144px));
+    --ly-h1-quiet: calc(var(--ly-scale) * clamp(34px, 2.095vw + 25.83px, 56px));
+    --ly-h1-side:  calc(var(--ly-scale) * clamp(40px, 1.143vw + 35.54px, 52px));
+    --ly-lead: clamp(17px, .286vw + 15.89px, 20px);                                  /* 20 / 17 */
+
+    /* icons (icon.css): a white plate for logos, and the connected dot */
+    --ic-white: #fff; --ic-ok: var(--ok, #2f9e5b);
+  }
+  /* a phone: the header 56, the sections padded 96 / 48, the hero's words 40 under the header and its
+     content ending 24 above the fold, 24 at both sides, 12 between columns */
+  @media (max-width: 639px) {
+    :root { --nav: 56px; --padt: 96px; --padb: 48px; --hgap: 40px; --hpadb: 24px; --gut: 24px; --gutter: 12px; --card-gap: 12px; --head-gap: 32px; }
+  }
+  @media (min-width: 640px) {
+    :root { --gut: 48px; --section: 48px; --section-band: 72px; --card-pad: 24px; }
+  }
+  @media (min-width: 1024px) {
+    :root { --gut: 80px; --section: 56px; --section-band: 96px; --card-gap: 24px;
+            --t-lead: 20px; --t-card: 20px; --t-h3: 28px; }
+  }
+
+  /* cards.css takes its card and panel radii from the scale */
+  html[data-radius] .card { --c-r: var(--r-lg); }
+  html[data-radius] .panel { --p-r: var(--r-md); }
+
+  /* ---------------------------------------------------------------- grounds
+     A ground re-sets the colour tokens for everything inside it; the utilities (bg-bg, text-ink...) follow. */
+  :root, .ground-base {
+    --bg: var(--p-bg); --surface: var(--p-surface); --ink: var(--p-ink); --muted: var(--p-muted);
+    --accent: var(--p-accent); --accent-ink: var(--p-accent-ink); --card: var(--p-surface);
+    --action: var(--p-action); --action-ink: var(--p-action-ink);
+  }
+  .ground-surface {
+    --bg: var(--p-surface); --surface: var(--p-bg); --ink: var(--p-ink); --muted: var(--p-muted);
+    --accent: var(--p-accent); --accent-ink: var(--p-accent-ink); --card: var(--p-bg);
+    --action: var(--p-action); --action-ink: var(--p-action-ink);
+  }
+  .ground-inverse {
+    --bg: var(--p-inv-bg); --surface: var(--p-inv-surface); --ink: var(--p-inv-ink); --muted: var(--p-inv-muted);
+    --accent: var(--p-inv-accent); --accent-ink: var(--p-inv-accent-ink); --card: var(--p-inv-surface);
+    --action: var(--p-inv-action); --action-ink: var(--p-inv-action-ink);
+  }
+  :root, .ground-base, .ground-surface, .ground-inverse {
+    --line: color-mix(in oklab, var(--ink) 11%, transparent);
+    --line-strong: color-mix(in oklab, var(--ink) 20%, transparent);
+    /* effects (fx.js) and UI fragments (assets/ui) take the colours of the ground they sit on */
+    --fx-bg: var(--bg); --fx-surface: var(--surface); --fx-ink: var(--ink); --fx-muted: var(--muted);
+    --fx-accent: var(--accent); --fx-accent-ink: var(--accent-ink);
+    --ui-font: var(--font-text); --ui-mono: var(--font-mono); --ui-radius: var(--r-md);
+  }
+  .ground-base, .ground-surface, .ground-inverse { background: var(--bg); color: var(--ink); }
+
+  /* ---------------------------------------------------------------- reset (system.css's, in place of preflight) */
+  *, *::before, *::after { box-sizing: border-box; }
+  /* an anchor lands on the section's top: the fixed header covers --nav of its --padt */
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 0; scroll-behavior: auto; margin: 0; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 var(--t-body)/1.55 var(--font-text);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip;
+  }
+  img, svg, video, canvas { display: block; max-width: 100%; }
+  /* hidden means hidden, also on an img the line above makes a block (a peek photograph) */
+  [hidden] { display: none !important; }
+  img, video { height: auto; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+  h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
+  ul, ol { padding: 0; list-style: none; }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display); font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking); text-wrap: balance; overflow-wrap: break-word;
+    /* a long word breaks at a syllable with a hyphen; only words of 10 letters or more */
+    hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 10 4 4;
+  }
+  h1, .t-h1 { font-size: var(--t-h1); line-height: 1.04; }
+  h2, .t-h2 { font-size: var(--t-h2); line-height: 1.1; }
+  h3, .t-h3 { font-size: var(--t-h3); line-height: 1.2; }
+  h4, .t-card { font-family: var(--font-text); font-weight: 500; font-size: var(--t-card); line-height: 1.3; letter-spacing: -0.01em; }
+  p { text-wrap: pretty; }
+  .t-lead  { font-size: var(--t-lead); line-height: 1.5; }
+  .t-body  { font-size: var(--t-body); line-height: 1.55; }
+  .t-small { font-size: var(--t-small); line-height: 1.5; }
+  .t-label { font-size: var(--t-label); font-weight: 500; line-height: 1.4; letter-spacing: 0.01em; }
+  .t-stat  { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--t-stat);
+             line-height: 1; letter-spacing: var(--display-tracking); font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  .mono  { font-family: var(--font-mono); }
+  .measure { max-width: 62ch; }
+  :focus-visible { outline: 2px solid var(--action); outline-offset: 2px; border-radius: 2px; }
+  ::selection { background: color-mix(in oklab, var(--accent) 30%, transparent); }
+}

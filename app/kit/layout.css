@@ -18,27 +18,6 @@
   Every number here is in references/layout-v4.md with what it was measured on; change it there first.
 */
 
-/* ---------------------------------------------------------------- tokens */
-:root {
-  --ly-nav: var(--nav, 72px);
-  --ly-screen: calc(100svh - var(--ly-nav));      /* one screen under the fixed header: 828 at 1440x900, 788 at 390x844 */
-  --ly-pad: var(--padt, 120px);
-  --ly-hero-pad: var(--hgap, 48px);
-  --ly-head-gap: var(--head-gap, 48px);            /* a section's heading block to its visual (system.css) */
-  /* the content box of one screen (708 at 1440x900) and of the hero (716 = 900 - 72 - 48 - 64) */
-  --ly-fit: calc(100svh - var(--padt, 120px) - var(--padb, 72px) - var(--bar, 0px));
-  --ly-hero-h: calc(100svh - var(--nav, 72px) - var(--hgap, 48px) - var(--hpadb, 64px) - var(--bar, 0px));
-  --ly-scale: 1;
-  /* hero sizes: straight lines from 390 to 1440, times the pairing's --ly-scale (layout-v4.md, section 3) */
-  --ly-h1:       calc(var(--ly-scale) * clamp(40px, 3.048vw + 28.11px, 72px));    /* 72 / 40: split, product, film, centred */
-  --ly-h1-xl:    calc(var(--ly-scale) * clamp(44px, 3.429vw + 30.63px, 80px));    /* 80 / 44: photo */
-  --ly-h1-col:   calc(var(--ly-scale) * clamp(40px, 2.286vw + 31.09px, 64px));    /* 64 / 40: collage */
-  --ly-h1-mega:  calc(var(--ly-scale) * clamp(56px, 9.524vw + 18.86px, 156px));   /* 156 / 56: editorial */
-  --ly-h1-word:  calc(var(--ly-scale) * clamp(54px, 8.571vw + 20.57px, 144px));   /* 144 / 54: word */
-  --ly-h1-quiet: calc(var(--ly-scale) * clamp(34px, 2.095vw + 25.83px, 56px));    /* 56 / 34: statement */
-  --ly-h1-side:  calc(var(--ly-scale) * clamp(40px, 1.143vw + 35.54px, 52px));    /* 52 / 40: triptych */
-  --ly-lead: clamp(17px, .286vw + 15.89px, 20px);                                  /* 20 / 17 */
-}
 
 /* the pairing's display axes (fonts.json): width through font-stretch, the rest as settings */
 h1, h2, h3, .ly-display { font-stretch: var(--display-stretch, 100%); font-variation-settings: var(--display-axes, normal); }

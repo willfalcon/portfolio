@@ -10,8 +10,6 @@
   http). Sizes: ic-16 ic-20 ic-24 ic-28 ic-32 ic-36 ic-40 ic-48 ic-56.
 */
 
-/* the only colours outside the ground tokens: a white plate for logos, and the connected dot */
-:root { --ic-white: #fff; --ic-ok: var(--ok, #2f9e5b); }
 
 /* ------------------------------------------------------------ the icon itself */
 .ic { --ic-s: 24px; display: inline-block; flex: none; height: var(--ic-s); width: auto; max-width: none; vertical-align: middle; object-fit: contain; }

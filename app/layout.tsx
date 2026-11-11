@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import KitScripts from '@/components/KitScripts';
+import './globals.css';
 
 const title = 'Will Hawks: frontend engineer, React and Next.js';
 const description =
@@ -32,28 +33,8 @@ export const viewport: Viewport = {
   themeColor: '#ebe5e3',
 };
 
-// The design kit (public/assets) is plain CSS and JS. Its stylesheets load here, in the order the kit expects,
-// and its scripts load after hydration (KitScripts) so they never race React for the DOM.
-const kitStyles = [
-  '/assets/system.css',
-  '/assets/ui/cards.css',
-  '/assets/motion/motion.css',
-  '/assets/layout/layout.css',
-  '/assets/icons/icon.css',
-];
-
-const rootTokens = `:root {
-  --p-bg: #ebe5e3; --p-surface: #e1dad7; --p-ink: #2b2622; --p-muted: #655c58;
-  --p-accent: #0f7d45; --p-accent-ink: #ffffff; --p-action: #0f7d45; --p-action-ink: #ffffff;
-  --p-inv-bg: #2b2622; --p-inv-surface: #36312d; --p-inv-ink: #ebe5e3; --p-inv-muted: #a29c99;
-  --p-inv-accent: #ebe5e3; --p-inv-accent-ink: #2b2622; --p-inv-action: #ebe5e3; --p-inv-action-ink: #2b2622;
-  --font-display: "Schibsted Grotesk", system-ui, sans-serif;
-  --font-text: "Schibsted Grotesk", system-ui, sans-serif;
-  --display-weight: 400;
-  --display-tracking: -0.035em;
-  --display-tracking-xl: -0.042em;
-  --ly-scale: 0.98;
-}`;
+// The design kit's scripts (public/assets) load after hydration (KitScripts) so they never race React for the DOM.
+// Its stylesheets are now part of globals.css (Tailwind, with the old kit CSS in a cascade layer under the utilities).
 
 // Set before first paint: the hero waits for its entrance, and the moment loader knows script is on.
 const bootScript =
@@ -68,11 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet" />
-        {kitStyles.map(href => (
-          <link key={href} rel="stylesheet" href={href} />
-        ))}
-        <style dangerouslySetInnerHTML={{ __html: rootTokens }} />
-        <link rel="stylesheet" href="/site.css" />
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <link rel="modulepreload" href="/assets/moments/moments.js" />
         <link rel="modulepreload" href="/assets/moments/lib.js" />
