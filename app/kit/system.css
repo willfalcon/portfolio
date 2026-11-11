@@ -936,7 +936,7 @@ main > .photo-band--hero:first-child > .photo-band__text { padding-top: calc(var
    empty band (the row becomes a column, its gaps kept) */
 @media (max-width: 639px) {
   [data-place="visit"] > .wrap:not(.kit-grid) > .kit-grid:has(> .pl-photo:last-child) { flex: 1 0 auto; }
-  [data-place="visit"] > .wrap.grid:has(> .pl-photo:last-child),
+  [data-place="visit"] > .wrap.kit-grid:has(> .pl-photo:last-child),
   [data-place="visit"] > .wrap > .kit-grid:has(> .pl-photo:last-child) { display: flex; flex-direction: column; }
   [data-place="visit"] .kit-grid > .pl-photo:last-child,
   [data-place="visit"] .kit-grid > .pl-photo:last-child > picture { display: flex; flex-direction: column; flex: 1 0 auto; }
