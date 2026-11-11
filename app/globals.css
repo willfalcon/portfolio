@@ -1,38 +1,23 @@
 /*
-  The site's one stylesheet: Tailwind v4 over the design kit's tokens.
+  The site's one stylesheet: Tailwind v4 over the design tokens.
 
   Layers, lowest to highest:
-    theme      Tailwind's theme variables (only the fonts are defined there; see @theme below)
-    base       the kit's tokens (the source of truth), its grounds and its reset (ported from system.css)
-    kit        the old kit stylesheets, unchanged apart from their token blocks, kept loaded until every
-               component that depends on them is converted (app/kit/*.css). Shrinks as components move over.
-    components the few patterns that repeat or that utilities cannot express (selectors, pseudo-elements)
-    utilities  Tailwind utilities: they beat everything above, so a converted element never fights the kit
+    theme      Tailwind's theme variables (the fonts; every other token is mapped from :root with `inline`)
+    base       the tokens (the source of truth), the surface ground and the reset
+    utilities  Tailwind utilities, and the few custom ones below (wrap, stack-*)
 
-  Tailwind's preflight is not imported: the kit's own reset is in @layer base, so the page keeps its exact look.
+  Tailwind's preflight is not imported: the reset in @layer base keeps the page's exact look.
 */
-@layer theme, base, kit, components, utilities;
+@layer theme, base, components, utilities;
 
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
-/* class names come from the components only (not the kit's JS or the docs) */
 @source "../components/**/*.{ts,tsx}";
 @source "./**/*.{ts,tsx}";
-/* kit class names that are also Tailwind utilities: while the kit owns them, Tailwind must not generate them
-   (.grid would become a bare display:grid in the utilities layer and beat the kit's own overrides; .start-7
-   would become inset-inline-start). Drop a name from this list once the kit rule for it is gone. */
-@source not inline("{container,start-{1,2,3,4,5,6,7,8,9,10}}");
-
-@import "./kit/system.css" layer(kit);
-@import "./kit/cards.css" layer(kit);
-@import "./kit/motion.css" layer(kit);
-@import "./kit/layout.css" layer(kit);
-@import "./kit/icon.css" layer(kit);
-@import "./kit/site.css" layer(kit);
 
 /* ---------------------------------------------------------------- Tailwind theme
-   Only the kit's values exist (no Tailwind default theme is imported), so a utility can only use a token.
-   The fonts keep the kit's own names (--font-display, --font-text, --font-mono). Every other token keeps its
-   kit name on :root (below) and is mapped here with `inline`, so a utility writes var(--kit-name) and picks up
+   Only the site's tokens exist (no Tailwind default theme is imported), so a utility can only use a token.
+   The fonts are defined here (--font-display, --font-text, --font-mono). Every other token keeps its own
+   name on :root (below) and is mapped here with `inline`, so a utility writes var(--token) and picks up
    the value of the ground or breakpoint it sits in (--bg on .ground-surface, --gut on a phone...). */
 @layer theme {
   @theme static {
@@ -43,8 +28,8 @@
 }
 
 @theme inline {
-  /* breakpoints: the kit's media queries. phone < sm(640) <= tablet < lg(1024) <= laptop < xl(1280) <= desktop.
-     xs mirrors the kit's (max-width: 479px); one-off widths (720, 800) are written as min-[800px]: */
+  /* breakpoints: phone < sm(640) <= tablet < lg(1024) <= laptop < xl(1280) <= desktop.
+     A one-off width is written in place (min-[800px]:) */
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;
   --breakpoint-lg: 1024px;
@@ -63,7 +48,7 @@
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
 
-  /* spacing: the kit's 4/8 scale keeps its index (p-5 is --s-5, 24px; not Tailwind's 20px), plus the named
+  /* spacing: the 4/8 scale keeps its index (p-5 is --s-5, 24px; not Tailwind's 20px), plus the named
      layout lengths. There is no --spacing multiplier, so an off-scale number (p-13) does not exist. */
   --spacing-px: 1px;
   --spacing-0: 0px;
@@ -93,7 +78,7 @@
   --spacing-icon: var(--icon);
   --container-wrap: var(--container);
 
-  /* type scale: the kit's sizes with the line height (and weight, tracking) each one is set with */
+  /* type scale: the sizes with the line height (and weight, tracking) each one is set with */
   --text-label: var(--t-label);
   --text-label--line-height: 1.4;
   --text-label--font-weight: 500;
@@ -104,9 +89,9 @@
   --text-body--line-height: 1.55;
   --text-lead: var(--t-lead);
   --text-lead--line-height: 1.5;
-  --text-card: var(--t-card);
-  --text-card--line-height: 1.3;
-  --text-card--letter-spacing: -0.01em;
+  --text-title: var(--t-card);   /* not text-card: that is the card colour */
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.01em;
   --text-h3: var(--t-h3);
   --text-h3--line-height: 1.2;
   --text-h2: var(--t-h2);
@@ -119,7 +104,7 @@
   --text-hero-lead: var(--ly-lead);
   --font-weight-normal: 400;
   --font-weight-medium: 500;
-  --font-weight-display: var(--display-weight);
+  --font-weight-heading: var(--display-weight);
   --tracking-display: var(--display-tracking);
   --tracking-display-xl: var(--display-tracking-xl);
 
@@ -129,9 +114,8 @@
   --radius-lg: var(--r-lg);
   --radius-btn: var(--r-btn);
 
-  /* shadows the kit draws (the collage pieces, the pause disc, the icon tiles) */
+  /* shadows: the hero collage's pieces */
   --shadow-piece: 0 1px 2px rgb(0 0 0 / .08), 0 18px 40px -18px rgb(0 0 0 / .32);
-  --shadow-disc: 0 1px 2px rgb(0 0 0 / .12), 0 4px 12px -4px rgb(0 0 0 / .28);
 
   /* motion: the one UI ease and duration (a bare `transition` uses them) */
   --ease-ui: var(--ease);
@@ -141,24 +125,60 @@
   --default-transition-timing-function: var(--ease);
 }
 
-/* stack-N: the kit's vertical rhythm, the N-th spacing step between a block's children (margin on the later one) */
+/* stack-N: the vertical rhythm, the N-th spacing step between a block's children (margin on the later one) */
 @utility stack-* {
   & > * + * { margin-top: --value(--spacing-*); }
 }
 
-/* dark: the kit's strategy is a ground, not a media query. system.js sets <html data-tone="dark"> on a dark page,
-   and a section opts into the inverse palette with .ground-inverse. This site is light; the variant is here so
-   dark: means what the kit means by it. */
-@custom-variant dark (&:where([data-tone="dark"], [data-tone="dark"] *));
-/* the kit moves things on hover only for a fine pointer (a phone never keeps a stuck hover) */
-@custom-variant hover-fine (@media (hover: hover) and (pointer: fine) { &:hover });
-/* <html data-motion="off"> switches the motion layer off */
-@custom-variant motion (html:not([data-motion="off"]) &);
+/* the hero's entrance (Hero.tsx). The head script sets html.m-enter before the first paint and m-enter-done
+   700ms later; the hero carries data-enter and, once its script has decided, data-state.
+   enter-wait   the words wait hidden (and the collage at .98) until the entrance starts
+   enter-late   the safety mark passed before the script ran: the words fade in by CSS instead
+   enter-run    on the hero itself, while the entrance has not finished
+   enter-still  the hero stands as written: the collage takes its place at once */
+@custom-variant enter-wait {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    html.m-enter:not(.m-enter-done) [data-enter]:not([data-state]) & { @slot; }
+  }
+}
+@custom-variant enter-late {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    html.m-enter.m-enter-done [data-enter]:not([data-state]) & { @slot; }
+  }
+}
+@custom-variant enter-run (html.m-enter &:not([data-state="entered"], [data-state="still"]));
+@custom-variant enter-still ([data-state="still"] &);
+
+/* the page's width: one column for the header, every section and the footer, --gut at both sides */
+@utility wrap {
+  width: min(100% - 2 * var(--gut), var(--container));
+  margin-inline: auto;
+}
+
+/* the surface ground: re-sets the colour tokens for everything inside it (bg-bg, text-ink... follow) */
+@utility ground-surface {
+  --bg: var(--p-surface); --surface: var(--p-bg); --card: var(--p-bg);
+  background: var(--bg); color: var(--ink);
+}
+
+/* the drawn underline of a text link: a faint rest line, and the ink line draws in from the left on hover,
+   under the whole link. --rest-w is how much the faint line runs under (all of it, or the words before an arrow);
+   --rest-line is how much of the faint line shows at rest (a footer link has none) */
+@utility link-line {
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(var(--line-strong), var(--line-strong));
+  background-repeat: no-repeat;
+  background-size: 0% 1px, var(--rest-line, var(--rest-w, 100%)) 1px;
+  background-position: 0 100%, 0 100%;
+  padding-bottom: 2px;
+  transition: background-size var(--m-out) var(--m-ease), color var(--m-out) var(--m-ease);
+  &:is(:hover, :focus-visible) { background-size: 100% 1px, 100% 1px; transition-duration: var(--m-in); }
+  @media (prefers-reduced-motion: reduce) { transition-property: color; }
+}
 
 /* ---------------------------------------------------------------- tokens (the source of truth) */
 @layer base {
   :root {
-    /* palette: rose-grey-green (hex only; system.js reads --bg --surface --ink --muted --accent --accent-ink) */
+    /* palette: rose-grey-green */
     --p-bg: #ebe5e3;
     --p-surface: #e1dad7;
     --p-ink: #2b2622;
@@ -175,7 +195,7 @@
     --p-inv-accent-ink: #2b2622;
     --p-inv-action: #ebe5e3;
     --p-inv-action-ink: #2b2622;
-    /* the lit ground (sand; the kit's default) behind UI and in a closing band */
+    /* the lit ground (sand): behind the menu card's screenshot */
     --ground-bg: #d9ccb7; --ground-surface: #e9e0d2; --ground-ink: #2a2622; --ground-muted: #5a534a; --ground-accent: #a8794a;
 
     /* type: Schibsted Grotesk (the fonts themselves are in @theme above) */
@@ -245,7 +265,7 @@
     --m-cycle: 3.2s;
     --m-lift: -2px;
 
-    /* layout (layout.css): one screen under the header, and the hero's display sizes */
+    /* layout: one screen under the header, and the hero's display sizes */
     --ly-nav: var(--nav, 72px);
     --ly-screen: calc(100svh - var(--ly-nav));
     --ly-pad: var(--padt, 120px);
@@ -263,7 +283,7 @@
     --ly-h1-side:  calc(var(--ly-scale) * clamp(40px, 1.143vw + 35.54px, 52px));
     --ly-lead: clamp(17px, .286vw + 15.89px, 20px);                                  /* 20 / 17 */
 
-    /* icons (icon.css): a white plate for logos, and the connected dot */
+    /* icons: the white the logo tiles are mixed from, and the connected dot */
     --ic-white: #fff; --ic-ok: var(--ok, #2f9e5b);
   }
   /* a phone: the header 56, the sections padded 96 / 48, the hero's words 40 under the header and its
@@ -279,38 +299,19 @@
             --t-lead: 20px; --t-card: 20px; --t-h3: 28px; }
   }
 
-  /* cards.css takes its card and panel radii from the scale */
-  html[data-radius] .card { --c-r: var(--r-lg); }
-  html[data-radius] .panel { --p-r: var(--r-md); }
-
   /* ---------------------------------------------------------------- grounds
-     A ground re-sets the colour tokens for everything inside it; the utilities (bg-bg, text-ink...) follow. */
-  :root, .ground-base {
+     The page's colour tokens; a ground (the ground-surface utility) re-sets them for what sits inside it. */
+  :root {
     --bg: var(--p-bg); --surface: var(--p-surface); --ink: var(--p-ink); --muted: var(--p-muted);
     --accent: var(--p-accent); --accent-ink: var(--p-accent-ink); --card: var(--p-surface);
     --action: var(--p-action); --action-ink: var(--p-action-ink);
   }
-  .ground-surface {
-    --bg: var(--p-surface); --surface: var(--p-bg); --ink: var(--p-ink); --muted: var(--p-muted);
-    --accent: var(--p-accent); --accent-ink: var(--p-accent-ink); --card: var(--p-bg);
-    --action: var(--p-action); --action-ink: var(--p-action-ink);
-  }
-  .ground-inverse {
-    --bg: var(--p-inv-bg); --surface: var(--p-inv-surface); --ink: var(--p-inv-ink); --muted: var(--p-inv-muted);
-    --accent: var(--p-inv-accent); --accent-ink: var(--p-inv-accent-ink); --card: var(--p-inv-surface);
-    --action: var(--p-inv-action); --action-ink: var(--p-inv-action-ink);
-  }
-  :root, .ground-base, .ground-surface, .ground-inverse {
+  :root, .ground-surface {
     --line: color-mix(in oklab, var(--ink) 11%, transparent);
     --line-strong: color-mix(in oklab, var(--ink) 20%, transparent);
-    /* effects (fx.js) and UI fragments (assets/ui) take the colours of the ground they sit on */
-    --fx-bg: var(--bg); --fx-surface: var(--surface); --fx-ink: var(--ink); --fx-muted: var(--muted);
-    --fx-accent: var(--accent); --fx-accent-ink: var(--accent-ink);
-    --ui-font: var(--font-text); --ui-mono: var(--font-mono); --ui-radius: var(--r-md);
   }
-  .ground-base, .ground-surface, .ground-inverse { background: var(--bg); color: var(--ink); }
 
-  /* ---------------------------------------------------------------- reset (system.css's, in place of preflight) */
+  /* ---------------------------------------------------------------- reset (in place of preflight) */
   *, *::before, *::after { box-sizing: border-box; }
   /* an anchor lands on the section's top: the fixed header covers --nav of its --padt */
   html { -webkit-text-size-adjust: 100%; scroll-padding-top: 0; scroll-behavior: auto; margin: 0; }
@@ -333,20 +334,11 @@
     /* a long word breaks at a syllable with a hyphen; only words of 10 letters or more */
     hyphens: auto; -webkit-hyphens: auto; hyphenate-limit-chars: 10 4 4;
   }
-  h1, .t-h1 { font-size: var(--t-h1); line-height: 1.04; }
-  h2, .t-h2 { font-size: var(--t-h2); line-height: 1.1; }
-  h3, .t-h3 { font-size: var(--t-h3); line-height: 1.2; }
-  h4, .t-card { font-family: var(--font-text); font-weight: 500; font-size: var(--t-card); line-height: 1.3; letter-spacing: -0.01em; }
+  h1 { font-size: var(--t-h1); line-height: 1.04; }
+  h2 { font-size: var(--t-h2); line-height: 1.1; }
+  h3 { font-size: var(--t-h3); line-height: 1.2; }
+  h4 { font-family: var(--font-text); font-weight: 500; font-size: var(--t-card); line-height: 1.3; letter-spacing: -0.01em; }
   p { text-wrap: pretty; }
-  .t-lead  { font-size: var(--t-lead); line-height: 1.5; }
-  .t-body  { font-size: var(--t-body); line-height: 1.55; }
-  .t-small { font-size: var(--t-small); line-height: 1.5; }
-  .t-label { font-size: var(--t-label); font-weight: 500; line-height: 1.4; letter-spacing: 0.01em; }
-  .t-stat  { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--t-stat);
-             line-height: 1; letter-spacing: var(--display-tracking); font-variant-numeric: tabular-nums; }
-  .muted { color: var(--muted); }
-  .mono  { font-family: var(--font-mono); }
-  .measure { max-width: 62ch; }
   :focus-visible { outline: 2px solid var(--action); outline-offset: 2px; border-radius: 2px; }
   ::selection { background: color-mix(in oklab, var(--accent) 30%, transparent); }
 }

@@ -1,32 +1,31 @@
 import { skwahdle } from '@/app/content';
+import { ProjectMeta } from './M2l';
+import { cx, sectionClass, sectionWrap } from './ui';
 
 // The three facts as rows on the left, two phone screens side by side from the split line.
 export default function Skwahdle() {
   return (
-    <section className="section g2m" id="skwahdle" aria-labelledby="skwahdle-h">
-      <div className="wrap kit-grid grid--top">
-        <div className="span-6 stack-5">
+    <section className={sectionClass()} id="skwahdle" aria-labelledby="skwahdle-h">
+      <div className={cx(sectionWrap(), 'lg:items-start')}>
+        <div className="col-span-full min-w-0 stack-5 lg:col-span-6">
           <h2 id="skwahdle-h">{skwahdle.title}</h2>
-          <p className="t-lead">{skwahdle.lead}</p>
-          <ul className="rows">
+          <p className="text-lead">{skwahdle.lead}</p>
+          <ul>
             {skwahdle.points.map(p => (
-              <li key={p.title}>
-                <span className="rows__name">{p.title}<small>{p.body}</small></span>
+              <li className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-5 gap-y-1 border-b border-line py-4 first:pt-0" key={p.title}>
+                <span className="font-medium">
+                  {p.title}
+                  <small className="mt-1 block text-(length:--t-small) font-normal text-muted">{p.body}</small>
+                </span>
               </li>
             ))}
           </ul>
-          <p className="project__meta">
-            <span>{skwahdle.stack}</span>
-            <span className="project__links">
-              <a className="link" href={skwahdle.live}>Play today’s word</a>
-              <a className="link" href={skwahdle.code}>See the code</a>
-            </span>
-          </p>
+          <ProjectMeta stack={skwahdle.stack} links={[[skwahdle.live, 'Play today’s word'], [skwahdle.code, 'See the code']]} />
         </div>
-        <div className="phones span-6 start-7">
+        <div className="col-span-full grid min-w-0 grid-cols-2 content-start gap-gutter max-sm:grid-cols-1 lg:col-span-6 lg:col-start-7">
           {skwahdle.shots.map(s => (
-            <div className="frame frame--photo phone" key={s.img}>
-              <img className="frame__img" src={s.img} width={640} height={883} alt={s.alt} loading="lazy" data-source="client" data-subject="Skwahdle on a phone" />
+            <div className="relative isolate overflow-clip rounded-lg bg-surface aspect-square lg:aspect-[100/138]" key={s.img}>
+              <img className="absolute inset-0 z-0 h-full w-full max-w-none object-cover" src={s.img} width={640} height={883} alt={s.alt} loading="lazy" />
             </div>
           ))}
         </div>
