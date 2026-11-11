@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+shots
+.taste-skill/chrome-*
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.taste-skill/kit-trim
+.taste-skill/consistency
+.taste-skill/gate

@@ -1,0 +1,22 @@
+[
+  {
+    "check": "hero-lines",
+    "target": "section.hero",
+    "reason": "The h1 is the person's name and role, 29 characters, fixed; it takes 3 lines at 1440 and 1024. The stress test fills it to the split hero's 44-character maximum, which this page's copy never reaches."
+  },
+  {
+    "check": "copy-headings",
+    "target": "clients-h",
+    "reason": "These headings are the names of the projects and companies shown (Tensure, Todyl, Mailchimp, Move to Learn TV, Skwahdle); a portfolio's products are its projects, and the gate takes no --products list to say so."
+  },
+  {
+    "check": "spill",
+    "target": "a.ly-piece.m-zoom:nth-of-type(2)",
+    "reason": "The client chose this collage: the MDHS screenshot deliberately overlaps the Move to Learn TV screenshot as a layered composition, not a box running out of its panel."
+  },
+  {
+    "check": "spill",
+    "target": "a.ly-piece.m-zoom.hero__phone",
+    "reason": "The client chose this collage: the Skwahdle phone deliberately overlaps the Move to Learn TV screenshot in front, as a layered composition."
+  }
+]

@@ -1,0 +1,348 @@
+{
+ "start": "2026-11-11T02:29:59.145Z",
+ "round": 2,
+ "idle": 0,
+ "errors": 0,
+ "status": "pass",
+ "history": [
+  {
+   "at": "2026-11-11T02:31:52.707Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 1,
+   "round": 1,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-11T03:40:17.079Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 1,
+   "round": 2,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-11T03:40:22.433Z",
+   "mode": "manual",
+   "status": "pass",
+   "fails": 0,
+   "round": 2,
+   "reused": true,
+   "stopHookActive": false
+  }
+ ],
+ "max": 3,
+ "marker": {
+  "page": "out/index.html",
+  "url": null,
+  "root": "out",
+  "kind": "service",
+  "category": "frontend engineering",
+  "primary": "Email me",
+  "rounds": 3,
+  "start": "2026-11-11T02:29:59.145Z",
+  "by": "gate.mjs --start"
+ },
+ "manual": true,
+ "roundKey": "2b8429ed9cb21e72:c24b69d7",
+ "roundFree": false,
+ "idleFree": false,
+ "blockKey": null,
+ "fp": "2b8429ed9cb21e72",
+ "page": "out/index.html",
+ "found": {
+  "fails": [
+   {
+    "check": "spill",
+    "where": "div.hero-text.grid > div.ly-collage.hero__collage > div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(2)",
+    "msg": "lies across the edge of the card div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(1): 289x72px on it, 258px past its bottom, 151px past its right",
+    "fix": "keep the box inside the panel it starts on: shrink it, or grow the panel to hold it",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "spill"
+    ],
+    "wheres": [
+     "div.hero-text.grid > div.ly-collage.hero__collage > div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(2)"
+    ]
+   },
+   {
+    "check": "copy-headings",
+    "where": "h2#clients-h \"Client work at Tensure\"",
+    "msg": "\"Client work at Tensure\" names no product, part, place or section (5 headings like it; at most one brand line per page) (and 4 more like it: \"Todyl\", \"Mailchimp\", \"Move to Learn TV\", \"Skwahdle\")",
+    "fix": "name the thing in every heading: the product, a part, the place or a section noun",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "copy-headings"
+    ],
+    "wheres": [
+     "h2#clients-h \"Client work at Tensure\""
+    ]
+   },
+   {
+    "check": "hero-lines",
+    "where": "section.hero h1",
+    "msg": "the check fills the h1 to 44 characters (this hero's maxChars in heroes.json), not the page's own: it takes 4 lines at 1440, 3 at most",
+    "fix": "the check fills the h1 to this hero's maxChars, not your own: take the next type pairing the deal printed (start.mjs); when the h1 is final and fits, waive it (target: section.hero h1)",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "hero-lines"
+    ],
+    "wheres": [
+     "section.hero h1"
+    ]
+   }
+  ],
+  "warns": [
+   {
+    "check": "scroll-reveal",
+    "where": "section#m2l > div.wrap.grid > div.frame.frame--photo",
+    "msg": "starts \"transform\" (0.4 s) the moment it is scrolled into view (an IntersectionObserver) on img.frame__img (inside a dealt moment's section, [data-moment]: an enter moment is expected on every kind; its still is judged under reduced motion)",
+    "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "no-visual",
+    "where": "section#clients \"Client work at Tensure\"",
+    "msg": "pictures, effects and mocks cover 21% of this section; a feature section needs a visual (about 25% or more)",
+    "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "same-action",
+    "where": "div.wrap.grid > div.group.clients__group:nth-of-type(2) > p.clients__more.span-12 > a.link \"Download résumé\"",
+    "msg": "\"Download résumé\" is a button in one place and a text link in another: one action in two looks",
+    "fix": "show one action one way: the same button wherever it repeats, or a text link everywhere",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "main#top > section.hero.hero--split / section#clients",
+    "msg": "180px between these sections, -42% against the median 310px of gaps at a change of ground",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#mdhs / section#m2l",
+    "msg": "251px between these sections, -28% against the median 349px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "photo-set",
+    "where": "div.ly-collage.hero__collage > div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(1) > img \"m2l-home-640.jpg\"",
+    "msg": "3 photographs in more than one look: lightness from 0.26 to 0.84; the odd one out is m2l-home-640.jpg",
+    "fix": "grade the photographs to one look (light, colour, warmth), or replace the odd one out",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav-labels",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(1) > a.nav__link \"Experience\"",
+    "msg": "\"Experience\" opens a section headed \"Client work at Tensure\"",
+    "fix": "name each nav link after the heading of the section it opens",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav-labels",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(2) > a.nav__link \"Work\"",
+    "msg": "\"Work\" opens a section headed \"Mississippi Department of Human Services\"",
+    "fix": "name each nav link after the heading of the section it opens",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav-labels",
+    "where": "div.nav__menu > div.wrap.grid > div.menu-col.span-3:nth-of-type(1) > a:nth-of-type(1) \"MDHSState agency site and blocks\"",
+    "msg": "\"MDHSState agency site and blocks\" opens a section headed \"Mississippi Department of Human Services\"",
+    "fix": "name each nav link after the heading of the section it opens",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "nav-current",
+    "where": "header.nav",
+    "msg": "the nav stays on screen with 3 links to the page's sections, but never marks the one you are in (no link changes as the page scrolls)",
+    "fix": "mark the link of the section on screen (a colour, a weight or a line under it) as the visitor scrolls",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "photo-repeat",
+    "where": "section#m2l > div.wrap.grid > div.frame.frame--photo > img.frame__img \"m2l-home.jpg\"",
+    "msg": "the photograph m2l-home.jpg is shown 2 times on the page: a picture the visitor has already seen",
+    "fix": "show each photograph once: a different picture of what this section names, or none",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "share-meta",
+    "where": "head",
+    "msg": "the head lacks og:image: a shared link shows no picture or title of its own",
+    "fix": "copy the head block of starter.html: og tags, twitter:card, the icon and theme-color (references/system.md, Head)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "action-repeat",
+    "where": "header.nav > div.wrap.nav__bar > div.nav__actions > a.btn.btn--primary:nth-of-type(2) \"email me\"",
+    "msg": "\"email me\" shows 2 times on the first screen at 1440px (nav, hero): the nav's button and the hero's; nothing else on the screen may repeat it",
+    "fix": "show the action once a screen besides the nav's button: the hero's, the close's or the phone bar's, never all at once",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cta",
+    "where": "section#about \"About me\"",
+    "msg": "a section over 1.5 screens long with no link or button in it",
+    "fix": "add the action: a button in the hero, one on every priced item, one in the closing section",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "visual-caption",
+    "where": "div.wrap.grid > div.group.mdhs__group:nth-of-type(2) > p.project__meta.mdhs__meta > span \"WordPress, PHP, Preact, Sass, WP REST AP\"",
+    "msg": "a muted 14px line of 2 rows sits 24px under the picture mdhs-blocks-phone.jpg: it reads as a caption: \"WordPress, PHP, Preact, Sass, WP REST AP...\"; no caption or description under any image, render or visual (house rule)",
+    "fix": "take the line away: no caption or description under, over or on any image, render or visual; a licence credit goes in one footer line",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "empty-area",
+    "where": "footer#contact \"Email me about frontend roles\"",
+    "msg": "40% of the section is empty: 576px of empty rows between its content, 3% beside content that covers under half the container, in its 1544px of rows (WARN over 35%, FAIL over 50%)",
+    "fix": "fill the section: a picture or a second column beside the words, or more of its own content; the section stays one or two screens tall (T-height)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "fold-cut",
+    "where": "div.hero-text.grid > div.ly-collage.hero__collage > div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(2)",
+    "msg": "the hero's button \"\" is cut by the bottom of the first screen (106px of its 110px below the fold)",
+    "fix": "size the hero so the heading ends above the fold, or starts below it",
+    "widths": [
+     320
+    ],
+    "from": "consistency"
+   }
+  ],
+  "crashed": [],
+  "seconds": {
+   "consistency": 103,
+   "layout": 3
+  }
+ },
+ "open": [],
+ "waived": [
+  {
+   "check": "spill",
+   "where": "div.hero-text.grid > div.ly-collage.hero__collage > div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(2)",
+   "msg": "lies across the edge of the card div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(1): 289x72px on it, 258px past its bottom, 151px past its right",
+   "fix": "keep the box inside the panel it starts on: shrink it, or grow the panel to hold it",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "spill"
+   ],
+   "wheres": [
+    "div.hero-text.grid > div.ly-collage.hero__collage > div.ly-collage__set > a.ly-piece.m-zoom:nth-of-type(2)"
+   ],
+   "reason": "The client chose this collage: the MDHS screenshot deliberately overlaps the Move to Learn TV screenshot as a layered composition, not a box running out of its panel."
+  },
+  {
+   "check": "copy-headings",
+   "where": "h2#clients-h \"Client work at Tensure\"",
+   "msg": "\"Client work at Tensure\" names no product, part, place or section (5 headings like it; at most one brand line per page) (and 4 more like it: \"Todyl\", \"Mailchimp\", \"Move to Learn TV\", \"Skwahdle\")",
+   "fix": "name the thing in every heading: the product, a part, the place or a section noun",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "copy-headings"
+   ],
+   "wheres": [
+    "h2#clients-h \"Client work at Tensure\""
+   ],
+   "reason": "These headings are the names of the projects and companies shown (Tensure, Todyl, Mailchimp, Move to Learn TV, Skwahdle); a portfolio's products are its projects, and the gate takes no --products list to say so."
+  },
+  {
+   "check": "hero-lines",
+   "where": "section.hero h1",
+   "msg": "the check fills the h1 to 44 characters (this hero's maxChars in heroes.json), not the page's own: it takes 4 lines at 1440, 3 at most",
+   "fix": "the check fills the h1 to this hero's maxChars, not your own: take the next type pairing the deal printed (start.mjs); when the h1 is final and fits, waive it (target: section.hero h1)",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "hero-lines"
+   ],
+   "wheres": [
+    "section.hero h1"
+   ],
+   "reason": "The h1 is the person's name and role, 29 characters, fixed; it takes 3 lines at 1440 and 1024. The stress test fills it to the split hero's 44-character maximum, which this page's copy never reaches."
+  }
+ ],
+ "warnCount": 17,
+ "at": "2026-11-11T03:40:22.434Z"
+}
