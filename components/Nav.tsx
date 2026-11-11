@@ -31,49 +31,55 @@ export default function Nav() {
   const toggle = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLElement>(null);
 
+  // while the sheet is open the page under it can't scroll, and inert keeps Tab from wandering into it
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
+    const behind = [...(header.current?.parentElement?.children ?? [])].filter(el => el !== header.current);
+    behind.forEach(el => el.toggleAttribute('inert', open));
+    return () => behind.forEach(el => el.removeAttribute('inert'));
   }, [open]);
 
   useEffect(() => {
     const wide = matchMedia('(min-width: 1024px)');
     const onWide = (e: MediaQueryListEvent) => { if (e.matches) setOpen(false); };
+    wide.addEventListener('change', onWide);
+    return () => wide.removeEventListener('change', onWide);
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (header.current?.dataset.open === 'true') { setOpen(false); toggle.current?.focus(); return; }
+      if (open) { setOpen(false); toggle.current?.focus(); return; }
       const active = document.activeElement as HTMLElement | null;
       if (active && header.current?.contains(active)) active.blur();
     };
-    wide.addEventListener('change', onWide);
     document.addEventListener('keydown', onKey);
-    return () => { wide.removeEventListener('change', onWide); document.removeEventListener('keydown', onKey); };
-  }, []);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
   // a tap on any link in the open sheet closes it, so the section it leads to is never left under the sheet
   const closeOnLink = (e: React.MouseEvent) => {
     if (open && (e.target as HTMLElement).closest('a[href]')) setOpen(false);
   };
 
-  /* a word in the bar: an underline draws in from the left on hover and focus (and while its panel is open) */
+  /* a word in the bar: underlined on hover and focus (and while its panel is open) */
   const navLink = (tight = false) => cx(
-    'relative inline-flex h-[36px] items-center gap-1 whitespace-nowrap rounded-sm text-[15px] font-medium text-ink transition-colors',
+    'relative inline-flex h-[36px] items-center gap-1 whitespace-nowrap rounded-sm text-[15px] font-medium text-ink',
     tight ? 'px-2 before:inset-x-2' : 'px-3 before:inset-x-3 lg:max-xl:px-2 lg:max-xl:before:inset-x-2',
     "before:pointer-events-none before:absolute before:-bottom-[2px] before:h-[2px] before:rounded-[2px] before:bg-current before:content-['']",
-    'before:origin-right before:scale-x-0 before:transition-transform',
-    'hover:before:origin-left hover:before:scale-x-100 focus-visible:before:origin-left focus-visible:before:scale-x-100',
-    'group-hover/item:before:origin-left group-hover/item:before:scale-x-100 group-focus-within/item:before:origin-left group-focus-within/item:before:scale-x-100',
+    'before:invisible hover:before:visible focus-visible:before:visible group-hover/item:before:visible group-focus-within/item:before:visible',
     open && !tight && 'max-lg:h-[56px] max-lg:p-0 max-lg:text-[20px] max-lg:before:hidden',
     open && tight && 'max-lg:before:hidden',
   );
   const navItem = cx('group/item flex h-full items-center', open && 'max-lg:grid max-lg:h-auto max-lg:grid-cols-[1fr_auto] max-lg:border-b max-lg:border-line');
 
-  const menuLink = 'grid gap-1 py-2 font-medium transition-colors duration-(--m-out) ease-(--m-ease) hover:text-action hover:duration-(--m-in)';
+  const menuLink = 'grid gap-1 py-2 font-medium hover:text-action';
   const menuLine = 'text-(length:--t-small) font-normal text-muted';
   const menuCol = 'col-span-full grid content-start gap-2 lg:col-span-3';
   const menuLabel = 'mb-2 text-label text-muted';
 
   return (
-    <header ref={header} data-open={open} onClick={closeOnLink} className="fixed inset-x-0 top-0 z-50 h-nav border-b border-line bg-bg text-ink">
+    <header ref={header} onClick={closeOnLink} className="fixed inset-x-0 top-0 z-50 h-nav border-b border-line bg-bg text-ink">
       <div className="wrap flex h-full items-center gap-8 max-lg:gap-3 max-sm:gap-2 lg:max-xl:gap-6">
         <a
           className={cx(
@@ -87,6 +93,23 @@ export default function Nav() {
         </a>
         <Logo />
 
+        {/* first in the DOM so Tab goes from it straight into the sheet; order-last keeps it at the right of the bar */}
+        <button
+          ref={toggle}
+          type="button"
+          className={cx(
+            'hidden size-[44px] flex-none cursor-pointer place-items-center rounded-btn border border-line-strong bg-transparent text-ink max-lg:order-last max-lg:inline-grid',
+            open && 'max-lg:ml-auto',
+          )}
+          aria-expanded={open}
+          aria-label="Menu"
+          onClick={() => setOpen(o => !o)}
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path d={open ? 'M4 4l10 10M14 4L4 14' : 'M2 5h14M2 13h14'} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </button>
+
         <nav
           aria-label="Main"
           className={cx(
@@ -94,8 +117,6 @@ export default function Nav() {
             !open ? 'max-lg:hidden' : cx(
               'max-lg:fixed max-lg:inset-x-0 max-lg:top-nav max-lg:bottom-0 max-lg:flex max-lg:flex-col max-lg:gap-0 max-lg:overflow-y-auto max-lg:bg-bg',
               'max-lg:px-gut max-lg:pt-4 max-lg:pb-[calc(var(--btn-h)*2+56px)]',
-              'motion-safe:transition-[opacity,translate] motion-safe:duration-(--m-panel) motion-safe:ease-(--m-ease)',
-              'motion-safe:starting:opacity-0 motion-safe:starting:-translate-y-2',
             ),
           )}
         >
@@ -104,7 +125,7 @@ export default function Nav() {
             <a className={navLink()} href="#mdhs">
               Work
               <Chev className={cx(
-                'size-[12px] opacity-60 transition-transform lg:group-hover/item:rotate-180 lg:group-focus-within/item:rotate-180',
+                'size-[12px] opacity-60 lg:group-hover/item:rotate-180 lg:group-focus-within/item:rotate-180',
                 open && 'max-lg:hidden',
               )} />
             </a>
@@ -116,22 +137,18 @@ export default function Nav() {
                 aria-expanded={expanded}
                 onClick={() => setExpanded(x => !x)}
               >
-                <svg className={cx('size-4 transition-transform', expanded && 'rotate-180')} viewBox="0 0 16 16" aria-hidden="true">
+                <svg className={cx('size-4', expanded && 'rotate-180')} viewBox="0 0 16 16" aria-hidden="true">
                   <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
             )}
-            {/* the full-width panel: shows after 150ms of hover intent, fades and settles 6px in 200ms, closes in 120ms */}
+            {/* the full-width panel: shown on hover and focus */}
             <div
               className={cx(
-                'invisible absolute inset-x-0 top-full border-y border-line bg-bg pt-7 pb-8 text-ink opacity-0 -translate-y-[6px] motion-reduce:translate-none',
-                '[transition:opacity_var(--m-close)_var(--m-ease),translate_var(--m-close)_var(--m-ease),visibility_0s_linear_var(--m-close)]',
-                'lg:group-hover/item:visible lg:group-hover/item:translate-none lg:group-hover/item:opacity-100',
-                'lg:group-focus-within/item:visible lg:group-focus-within/item:translate-none lg:group-focus-within/item:opacity-100',
-                'lg:group-hover/item:[transition:opacity_var(--m-panel)_var(--m-ease)_150ms,translate_var(--m-panel)_var(--m-ease)_150ms,visibility_0s_linear_150ms]',
-                'lg:group-focus-within/item:[transition:opacity_var(--m-panel)_var(--m-ease)_150ms,translate_var(--m-panel)_var(--m-ease)_150ms,visibility_0s_linear_150ms]',
+                'invisible absolute inset-x-0 top-full border-y border-line bg-bg pt-7 pb-8 text-ink',
+                'lg:group-hover/item:visible lg:group-focus-within/item:visible',
                 open && cx(
-                  'max-lg:visible max-lg:static max-lg:col-span-full max-lg:translate-none max-lg:border-0 max-lg:p-0 max-lg:pb-4 max-lg:opacity-100',
+                  'max-lg:visible max-lg:static max-lg:col-span-full max-lg:border-0 max-lg:p-0 max-lg:pb-4',
                   expanded ? 'max-lg:block' : 'max-lg:hidden',
                 ),
               )}
@@ -161,11 +178,7 @@ export default function Nav() {
                     )}
                   >
                     <img
-                      className={cx(
-                        'absolute inset-0 z-0 h-full w-full max-w-none object-cover',
-                        'transition-transform duration-(--m-image-out) ease-(--m-ease)',
-                        'group-hover/card:scale-[1.03] group-hover/card:duration-(--m-image) motion-reduce:scale-none!',
-                      )}
+                      className="absolute inset-0 z-0 h-full w-full max-w-none object-cover"
                       src="/work/m2l-rows-640.jpg" width={640} height={480} alt="Rows of Move to Learn videos sorted by grade" loading="lazy"
                     />
                   </div>
@@ -197,7 +210,7 @@ export default function Nav() {
             href={contact.resume}
             download
           >
-            Résumé
+            Resume
           </a>
           <a
             className={btnClass('primary', 'nav', cx(
@@ -208,22 +221,6 @@ export default function Nav() {
             Email me
           </a>
         </div>
-
-        <button
-          ref={toggle}
-          type="button"
-          className={cx(
-            'hidden size-[44px] flex-none cursor-pointer place-items-center rounded-btn border border-line-strong bg-transparent text-ink max-lg:inline-grid',
-            open && 'max-lg:ml-auto',
-          )}
-          aria-expanded={open}
-          aria-label="Menu"
-          onClick={() => setOpen(o => !o)}
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-            <path d={open ? 'M4 4l10 10M14 4L4 14' : 'M2 5h14M2 13h14'} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          </svg>
-        </button>
       </div>
     </header>
   );

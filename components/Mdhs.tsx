@@ -53,7 +53,7 @@ export default function Mdhs() {
                   onFocus={() => setCurrent(s.key)}
                   onClick={e => { if (!(e.target as HTMLElement).closest('a, button')) setCurrent(s.key); }}
                   className={cx(
-                    'grid cursor-pointer grid-cols-[minmax(0,1fr)_auto] gap-x-5 gap-y-1 border-b py-4 transition-[border-color] first:pt-0',
+                    'grid cursor-pointer grid-cols-[minmax(0,1fr)_auto] gap-x-5 gap-y-1 border-b py-4 first:pt-0',
                     'sm:max-lg:py-6 sm:max-lg:first:pt-6 min-[800px]:max-lg:py-7 min-[800px]:max-lg:first:pt-7',
                     on ? 'border-ink' : 'border-line',
                   )}

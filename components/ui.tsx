@@ -46,44 +46,29 @@ export function Arrow({ xl = false }: { xl?: boolean }) {
     >
       <path
         className={cx(
-          'origin-[1px_50%] transform-fill opacity-0 scale-x-[.2]',
-          'transition-[opacity,scale] duration-(--m-out) ease-(--m-ease)',
-          'group-hover:opacity-100 group-hover:scale-x-100 group-hover:duration-(--m-in)',
-          'group-focus-visible:opacity-100 group-focus-visible:scale-x-100',
-          'motion-reduce:opacity-100 motion-reduce:scale-x-100',
+          'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100',
         )}
         d="M1 6h8"
       />
-      <path
-        className={cx(
-          'transition-[translate] duration-(--m-out) ease-(--m-ease)',
-          'group-hover:translate-x-[3px] group-hover:duration-(--m-in) group-focus-visible:translate-x-[3px]',
-          'motion-reduce:translate-x-0!',
-        )}
-        d="M4.5 2.5 8 6l-3.5 3.5"
-      />
+      <path d="M4.5 2.5 8 6l-3.5 3.5" />
     </svg>
   );
 }
 
 /* ---------------------------------------------------------------- buttons
-   A button rises 1px on hover (2px the large one) and presses 1px down with a 1.5% shrink; its tone moves
-   toward the ground. Under reduced motion only the colour changes. */
+   A button's tone moves toward the ground on hover, and further while pressed. */
 const btnBase = cx(
   'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer',
   'rounded-btn border font-text font-medium leading-none tracking-[0]',
-  'transition-[background-color,color,border-color,box-shadow,translate,scale] duration-(--m-out) ease-(--m-ease)',
-  'hover:duration-(--m-in) hover:-translate-y-px active:translate-y-px active:scale-[.985]',
-  'motion-reduce:translate-none! motion-reduce:scale-none!',
 );
 const btnTone = {
   primary: cx(
     'border-transparent bg-action text-action-ink hover:bg-[color-mix(in_oklab,var(--action)_84%,var(--bg))]',
-    'motion-reduce:active:bg-[color-mix(in_oklab,var(--action)_74%,var(--bg))]',
+    'active:bg-[color-mix(in_oklab,var(--action)_74%,var(--bg))]',
   ),
   secondary: cx(
     'bg-bg text-ink border-line-strong hover:bg-[color-mix(in_oklab,var(--bg)_92%,var(--ink))]',
-    'hover:border-[color-mix(in_oklab,var(--ink)_32%,transparent)] motion-reduce:active:bg-[color-mix(in_oklab,var(--bg)_86%,var(--ink))]',
+    'hover:border-[color-mix(in_oklab,var(--ink)_32%,transparent)] active:bg-[color-mix(in_oklab,var(--bg)_86%,var(--ink))]',
   ),
 };
 export const btnSize = {
@@ -91,7 +76,7 @@ export const btnSize = {
   nav: 'h-btn-h px-5 text-[15px]',
   xl: cx(
     'w-[min(100%,640px)] h-[clamp(64px,1.4vw+48px,72px)] px-5 font-display font-heading tracking-display',
-    'text-[clamp(20px,.6vw+16px,26px)] hover:-translate-y-[2px]',
+    'text-[clamp(20px,.6vw+16px,26px)]',
     'max-sm:w-full max-sm:h-[48px] max-sm:font-text max-sm:font-medium max-sm:text-[18px] max-sm:tracking-[0]',
   ),
 };
@@ -101,10 +86,8 @@ export function btnClass(tone: keyof typeof btnTone, size: keyof typeof btnSize 
 }
 
 /* ---------------------------------------------------------------- the text link
-   Underlined by a drawn line under its words (not its arrow), the arrow nudging 3px on hover. */
+   Underlined by a drawn line under its words (not its arrow). */
 export const textLink = cx(
   'link-line [--rest-w:calc(100%-1em-var(--s-2))] inline-flex items-center gap-2 font-medium text-ink max-sm:min-h-[44px]',
-  "after:inline-block after:content-['→'] after:transition-transform after:duration-(--m-out) after:ease-(--m-ease)",
-  'hover:after:translate-x-[3px] hover:after:duration-(--m-in) focus-visible:after:translate-x-[3px]',
-  'motion-reduce:after:translate-none!',
+  "after:inline-block after:content-['→']",
 );

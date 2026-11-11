@@ -117,37 +117,12 @@
   /* shadows: the hero collage's pieces */
   --shadow-piece: 0 1px 2px rgb(0 0 0 / .08), 0 18px 40px -18px rgb(0 0 0 / .32);
 
-  /* motion: the one UI ease and duration (a bare `transition` uses them) */
-  --ease-ui: var(--ease);
-  --ease-io: var(--m-ease-io);
-  --ease-enter: var(--m-ease-enter);
-  --default-transition-duration: var(--dur);
-  --default-transition-timing-function: var(--ease);
 }
 
 /* stack-N: the vertical rhythm, the N-th spacing step between a block's children (margin on the later one) */
 @utility stack-* {
   & > * + * { margin-top: --value(--spacing-*); }
 }
-
-/* the hero's entrance (Hero.tsx). The head script sets html.m-enter before the first paint and m-enter-done
-   700ms later; the hero carries data-enter and, once its script has decided, data-state.
-   enter-wait   the words wait hidden (and the collage at .98) until the entrance starts
-   enter-late   the safety mark passed before the script ran: the words fade in by CSS instead
-   enter-run    on the hero itself, while the entrance has not finished
-   enter-still  the hero stands as written: the collage takes its place at once */
-@custom-variant enter-wait {
-  @media screen and (prefers-reduced-motion: no-preference) {
-    html.m-enter:not(.m-enter-done) [data-enter]:not([data-state]) & { @slot; }
-  }
-}
-@custom-variant enter-late {
-  @media screen and (prefers-reduced-motion: no-preference) {
-    html.m-enter.m-enter-done [data-enter]:not([data-state]) & { @slot; }
-  }
-}
-@custom-variant enter-run (html.m-enter &:not([data-state="entered"], [data-state="still"]));
-@custom-variant enter-still ([data-state="still"] &);
 
 /* the page's width: one column for the header, every section and the footer, --gut at both sides */
 @utility wrap {
@@ -170,9 +145,7 @@
   background-size: 0% 1px, var(--rest-line, var(--rest-w, 100%)) 1px;
   background-position: 0 100%, 0 100%;
   padding-bottom: 2px;
-  transition: background-size var(--m-out) var(--m-ease), color var(--m-out) var(--m-ease);
-  &:is(:hover, :focus-visible) { background-size: 100% 1px, 100% 1px; transition-duration: var(--m-in); }
-  @media (prefers-reduced-motion: reduce) { transition-property: color; }
+  &:is(:hover, :focus-visible) { background-size: 100% 1px, 100% 1px; }
 }
 
 /* ---------------------------------------------------------------- tokens (the source of truth) */
@@ -247,23 +220,6 @@
     --btn-h-sm: 36px;
     --nav-h: var(--nav);
     --icon: 16px;
-
-    /* motion: the one UI ease-out */
-    --ease: cubic-bezier(.2, .8, .2, 1);
-    --dur: 180ms;
-    --m-in: 150ms;                              /* hover in: buttons, links, nav, tabs */
-    --m-out: 120ms;                             /* hover out */
-    --m-press: 90ms;                            /* a press */
-    --m-panel: 200ms;                           /* a menu or sheet opening */
-    --m-close: 120ms;                           /* a menu closing */
-    --m-slide: 240ms;                           /* an indicator travelling between two tabs or links */
-    --m-image: 600ms;                           /* a photograph scaling inside its mask */
-    --m-image-out: 400ms;                       /* ...and settling back */
-    --m-ease: var(--ease, cubic-bezier(.2, .8, .2, 1));
-    --m-ease-io: cubic-bezier(.65, 0, .35, 1);  /* the indicator: leaves and lands softly */
-    --m-ease-enter: cubic-bezier(.22, 1, .36, 1); /* an entrance settling */
-    --m-cycle: 3.2s;
-    --m-lift: -2px;
 
     /* layout: one screen under the header, and the hero's display sizes */
     --ly-nav: var(--nav, 72px);

@@ -31,20 +31,13 @@ export const viewport: Viewport = {
   themeColor: '#ebe5e3',
 };
 
-// Set before the first paint: the hero's words wait for its entrance (Hero.tsx), and 700ms later a safety mark
-// lets them fade in by CSS if the script is late.
-const bootScript =
-  "document.documentElement.classList.add('m-enter');" +
-  "setTimeout(function(){document.documentElement.classList.add('m-enter-done')},700);";
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet" />
-        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body suppressHydrationWarning>
         {children}
