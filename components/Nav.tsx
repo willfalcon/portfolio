@@ -169,11 +169,11 @@ export default function Nav() {
                 <a className={cx('group/card col-span-full grid min-w-0 gap-3 lg:col-span-3 lg:col-start-10', open && 'max-lg:gap-1 max-lg:py-2')} href="#m2l">
                   <div
                     className={cx(
-                      'relative isolate block min-h-[160px] flex-[1_0_auto] overflow-clip rounded-md bg-(--ground-bg)',
+                      'relative isolate block min-h-[160px] flex-[1_0_auto] overflow-clip rounded-md bg-sand',
                       "before:pointer-events-none before:absolute before:inset-0 before:z-0 before:content-['']",
-                      'before:bg-[radial-gradient(ellipse_70%_62%_at_50%_62%,color-mix(in_oklab,var(--card)_34%,transparent),transparent_72%)]',
+                      'before:bg-[radial-gradient(ellipse_70%_62%_at_50%_62%,color-mix(in_oklab,var(--color-surface)_34%,transparent),transparent_72%)]',
                       "after:pointer-events-none after:absolute after:inset-0 after:z-4 after:rounded-[inherit] after:content-['']",
-                      'after:shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--ink)_7%,transparent),inset_0_1px_0_color-mix(in_oklab,var(--ink)_4%,transparent)]',
+                      'after:shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--color-ink)_7%,transparent),inset_0_1px_0_color-mix(in_oklab,var(--color-ink)_4%,transparent)]',
                       open && 'max-lg:hidden',
                     )}
                   >

@@ -63,12 +63,12 @@ const btnBase = cx(
 );
 const btnTone = {
   primary: cx(
-    'border-transparent bg-action text-action-ink hover:bg-[color-mix(in_oklab,var(--action)_84%,var(--bg))]',
-    'active:bg-[color-mix(in_oklab,var(--action)_74%,var(--bg))]',
+    'border-transparent bg-action text-action-ink hover:bg-[color-mix(in_oklab,var(--color-action)_84%,var(--color-bg))]',
+    'active:bg-[color-mix(in_oklab,var(--color-action)_74%,var(--color-bg))]',
   ),
   secondary: cx(
-    'bg-bg text-ink border-line-strong hover:bg-[color-mix(in_oklab,var(--bg)_92%,var(--ink))]',
-    'hover:border-[color-mix(in_oklab,var(--ink)_32%,transparent)] active:bg-[color-mix(in_oklab,var(--bg)_86%,var(--ink))]',
+    'bg-bg text-ink border-line-strong hover:bg-[color-mix(in_oklab,var(--color-bg)_92%,var(--color-ink))]',
+    'hover:border-[color-mix(in_oklab,var(--color-ink)_32%,transparent)] active:bg-[color-mix(in_oklab,var(--color-bg)_86%,var(--color-ink))]',
   ),
 };
 export const btnSize = {

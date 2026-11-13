@@ -1,6 +1,6 @@
 import { clientWork, contact } from '@/app/content';
 import IconMosaic from './IconMosaic';
-import { cx, sectionClass, sectionHead, sectionWrap, textLink } from './ui';
+import { cx, gridClass, sectionHead, textLink } from './ui';
 
 type Row = (typeof clientWork.rows)[number];
 
@@ -24,27 +24,24 @@ function Engagement({ r }: { r: Row }) {
   );
 }
 
-/* The one surface-ground band, right after the hero: one card per engagement. Two groups so a phone gives each
-   its own screen; from 640px the groups dissolve into the grid (one row of three from 1024px). */
+/* The one surface-coloured band, right after the hero: one card per engagement. On a phone the cards stack
+   and the band is as tall as they are; from 640px it fills a screen (one row of three from 1024px). */
 export default function ClientWork() {
-  const [first, ...rest] = clientWork.rows;
-  const group = 'col-span-full flex min-h-0 min-w-0 flex-col max-sm:grid max-sm:content-start max-sm:gap-7 sm:contents';
   return (
-    <section className={cx(sectionClass(), 'ground-surface')} id="clients" aria-labelledby="clients-h">
-      <div className={sectionWrap()}>
-        <div className={group}>
-          <div className={cx(sectionHead, 'col-span-full mb-head-gap')}>
-            <h2 id="clients-h">{clientWork.title}</h2>
-            <p>{clientWork.lead}</p>
-          </div>
-          <Engagement r={first} />
+    <section
+      className="relative bg-surface box-border pt-padt pb-[calc(var(--padb)+var(--bar))] sm:min-h-svh xl:h-svh"
+      id="clients"
+      aria-labelledby="clients-h"
+    >
+      <div className={cx('wrap relative z-1 content-start', gridClass)}>
+        <div className={cx(sectionHead, 'col-span-full mb-head-gap')}>
+          <h2 id="clients-h">{clientWork.title}</h2>
+          <p>{clientWork.lead}</p>
         </div>
-        <div className={group}>
-          {rest.map(r => <Engagement r={r} key={r.name} />)}
-          <p className="col-span-full mt-7 max-sm:mt-0 sm:max-lg:hidden">
-            {clientWork.more} <a className={textLink} href={contact.resume} download>Download résumé</a>
-          </p>
-        </div>
+        {clientWork.rows.map(r => <Engagement r={r} key={r.name} />)}
+        <p className="col-span-full mt-7 max-sm:mt-0 sm:max-lg:hidden">
+          {clientWork.more} <a className={textLink} href={contact.resume} download>Download résumé</a>
+        </p>
       </div>
     </section>
   );

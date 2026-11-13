@@ -6,6 +6,19 @@ import { cx } from './ui';
    `in`: where it sits, which changes its columns and cells by screen width.
      engagement  a client card: logos alone on a phone, one row per tool from 640px to 1279px
      about       the About section: two columns from 1024px to 1279px */
+
+/* each cell is the colour of the section it sits in (the hairlines are the gaps between them), a touch darker on
+   hover; the logo's tile is white mixed toward it */
+const grounds = {
+  engagement: {
+    tile: 'bg-surface hover:bg-[color-mix(in_oklab,var(--color-ink)_3%,var(--color-surface))]',
+    logo: 'bg-[color-mix(in_oklab,var(--ic-white)_72%,var(--color-surface))]',
+  },
+  about: {
+    tile: 'bg-bg hover:bg-[color-mix(in_oklab,var(--color-ink)_3%,var(--color-bg))]',
+    logo: 'bg-[color-mix(in_oklab,var(--ic-white)_72%,var(--color-bg))]',
+  },
+};
 function columns(cols: 1 | 2 | 3, engagement: boolean) {
   const n = ['', 'grid-cols-1', 'grid-cols-2', 'grid-cols-3'][cols];
   if (engagement) return cols === 3 ? 'grid-cols-3 sm:max-xl:grid-cols-1' : cx(n, 'sm:max-xl:grid-cols-1');
@@ -16,6 +29,7 @@ export default function IconMosaic({ icons, label, cols, in: place, className }:
   icons: Icon[]; label: string; cols: 1 | 2 | 3; in: 'engagement' | 'about'; className?: string;
 }) {
   const engagement = place === 'engagement';
+  const ground = grounds[place];
   return (
     <div
       role="img"
@@ -30,7 +44,8 @@ export default function IconMosaic({ icons, label, cols, in: place, className }:
         <div
           key={i.name}
           className={cx(
-            'grid min-w-0 content-start gap-[14px] bg-bg p-[20px] hover:bg-[color-mix(in_oklab,var(--ink)_3%,var(--bg))]',
+            'grid min-w-0 content-start gap-[14px] p-[20px]',
+            ground.tile,
             engagement
               ? 'max-sm:justify-center max-sm:px-5 max-sm:py-6 sm:max-xl:flex sm:max-xl:items-center sm:max-xl:gap-3 sm:max-xl:p-4'
               : 'max-sm:gap-2 max-sm:p-3 lg:max-xl:flex lg:max-xl:items-center lg:max-xl:gap-3 lg:max-xl:p-4',
@@ -39,8 +54,8 @@ export default function IconMosaic({ icons, label, cols, in: place, className }:
           <span
             className={cx(
               'inline-grid size-(--tile) flex-none place-items-center rounded-[calc(var(--tile)*.28)] text-ink [--tile:40px]',
-              'bg-[color-mix(in_oklab,var(--ic-white)_72%,var(--bg))]',
-              'shadow-[inset_0_0_0_1px_var(--line),0_1px_2px_color-mix(in_oklab,var(--ink)_7%,transparent)]',
+              ground.logo,
+              'shadow-[inset_0_0_0_1px_var(--color-line),0_1px_2px_color-mix(in_oklab,var(--color-ink)_7%,transparent)]',
               engagement && 'max-sm:[--tile:56px]',
             )}
           >
