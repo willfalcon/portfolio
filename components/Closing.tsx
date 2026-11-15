@@ -14,7 +14,7 @@ export default function Closing() {
       <div
         className={cx(
           'wrap relative z-1 grid h-full grid-rows-[minmax(0,1fr)_auto] gap-y-8 max-sm:h-auto sm:max-xl:h-auto sm:max-xl:min-h-0 sm:max-xl:flex-[1_0_auto]',
-          'max-sm:grid-rows-[minmax(0,1fr)_minmax(0,1fr)] max-sm:gap-y-[calc(var(--padt)+var(--padb)+var(--bar))]',
+          'max-sm:grid-rows-none max-sm:gap-y-9',
         )}
       >
         <div className="flex min-h-0 flex-col gap-6">

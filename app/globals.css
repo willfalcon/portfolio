@@ -216,10 +216,10 @@
     /* icons: the white the logo tiles are mixed from, and the connected dot */
     --ic-white: #fff; --ic-ok: var(--ok, #2f9e5b);
   }
-  /* a phone: the header 56, the sections padded 96 / 48, the hero's words 40 under the header and its
+  /* a phone: the header 56, the sections padded 88 / 32, the hero's words 40 under the header and its
      content ending 24 above the fold, 24 at both sides, 12 between columns */
   @media (max-width: 639px) {
-    :root { --nav: 56px; --padt: 96px; --padb: 48px; --hgap: 40px; --hpadb: 24px; --gut: 24px; --gutter: 12px; --card-gap: 12px; --head-gap: 32px; }
+    :root { --nav: 56px; --padt: 88px; --padb: 32px; --hgap: 40px; --hpadb: 24px; --gut: 24px; --gutter: 12px; --card-gap: 12px; --head-gap: 32px; }
   }
   @media (min-width: 640px) {
     :root { --gut: 48px; --section: 48px; --section-band: 72px; --card-pad: 24px; }
