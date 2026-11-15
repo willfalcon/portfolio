@@ -5,23 +5,22 @@ export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Bool
 /* ---------------------------------------------------------------- layout
    One section per screen. Every section is padded --padt above and --padb below and is one screen tall
    from 1280px; from 640px to 1279px it grows past a screen when its content needs it. On a phone a section
-   is `screens` screens tall at least: a pair section splits into two groups, one screen each. */
-export function sectionClass({ screens = 2, tabletScreens = 1 }: { screens?: 1 | 2; tabletScreens?: 1 | 2 } = {}) {
+   is only as tall as its content: the sections sit --padb + --padt apart. */
+export function sectionClass({ tabletScreens = 1 }: { tabletScreens?: 1 | 2 } = {}) {
   return cx(
     'relative box-border h-svh pt-padt pb-[calc(var(--padb)+var(--bar))]',
-    'max-sm:grid max-sm:h-auto max-sm:grid-cols-[minmax(0,1fr)] max-sm:grid-rows-[1fr] max-sm:auto-rows-auto',
-    screens === 2 ? 'max-sm:min-h-[200lvh]' : 'max-sm:min-h-lvh',
+    'max-sm:h-auto',
     'sm:max-xl:flex sm:max-xl:h-auto sm:max-xl:flex-col',
     tabletScreens === 2 ? 'sm:max-lg:min-h-[200svh] lg:max-xl:min-h-svh' : 'sm:max-xl:min-h-svh',
   );
 }
 
-/* the column inside a section: fills it, and on a phone a pair section's two groups get a screen each */
+/* the column inside a section: fills it; on a phone a pair section's two groups stack 48px apart */
 export function sectionWrap({ grid = true, pair = true }: { grid?: boolean; pair?: boolean } = {}) {
   return cx(
     'wrap relative z-1 h-full max-sm:h-auto sm:max-xl:h-auto sm:max-xl:min-h-0 sm:max-xl:flex-[1_0_auto]',
     grid ? cx(gridClass, 'content-start') : 'flex flex-col',
-    pair && 'max-sm:grid max-sm:grid-rows-[minmax(0,1fr)_minmax(0,1fr)] max-sm:gap-y-[calc(var(--padt)+var(--padb)+var(--bar))]',
+    pair && 'max-sm:gap-y-7',
   );
 }
 

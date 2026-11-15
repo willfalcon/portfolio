@@ -9,10 +9,10 @@ type Row = (typeof clientWork.rows)[number];
 function Engagement({ r }: { r: Row }) {
   const words = 'sm:max-lg:col-start-1';
   return (
-    <article className="col-span-full flex min-w-0 flex-col sm:max-lg:grid sm:max-lg:grid-cols-2 sm:max-lg:content-start sm:max-lg:gap-x-6 lg:col-span-4">
+    <article className="col-span-full flex min-w-0 flex-col max-sm:not-first-of-type:mt-6 sm:max-lg:grid sm:max-lg:grid-cols-2 sm:max-lg:content-start sm:max-lg:gap-x-6 lg:col-span-4">
       <h3 className={cx('font-text text-(length:--t-card) leading-[1.3] font-medium', words)}>{r.name}</h3>
       <div className={cx('mt-1 text-label text-muted', words)}>{r.dates}</div>
-      <p className={cx('mt-3 mb-6 max-w-[46ch] sm:max-lg:mb-0', words)}>{r.body}</p>
+      <p className={cx('mt-3 mb-6 max-w-[46ch] max-sm:mb-4 sm:max-lg:mb-0', words)}>{r.body}</p>
       <IconMosaic
         in="engagement"
         className="mt-auto sm:max-lg:col-start-2 sm:max-lg:row-span-3 sm:max-lg:row-start-1 sm:max-lg:mt-0 sm:max-lg:self-start"
@@ -39,7 +39,7 @@ export default function ClientWork() {
           <p>{clientWork.lead}</p>
         </div>
         {clientWork.rows.map(r => <Engagement r={r} key={r.name} />)}
-        <p className="col-span-full mt-7 max-sm:mt-0 sm:max-lg:hidden">
+        <p className="col-span-full mt-7 max-sm:mt-6 sm:max-lg:hidden">
           {clientWork.more} <a className={textLink} href={contact.resume} download>Download résumé</a>
         </p>
       </div>

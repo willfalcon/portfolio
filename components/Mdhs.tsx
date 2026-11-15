@@ -32,6 +32,7 @@ export default function Mdhs() {
           'wrap relative z-1 h-full content-start max-sm:h-auto sm:max-xl:h-auto sm:max-xl:min-h-0 sm:max-xl:flex-[1_0_auto]',
           gridClass,
           'max-lg:grid-cols-[minmax(0,1fr)] max-lg:grid-rows-[minmax(0,1fr)_minmax(0,1fr)] max-lg:gap-y-[calc(var(--padt)+var(--padb)+var(--bar))]',
+          'max-sm:grid-rows-none max-sm:gap-y-7',
         )}
       >
         <div className={group}>
