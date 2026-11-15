@@ -24,7 +24,7 @@ export default function Skwahdle() {
         </div>
         <div className="col-span-full grid min-w-0 grid-cols-2 content-start gap-gutter max-sm:grid-cols-1 lg:col-span-6 lg:col-start-7">
           {skwahdle.shots.map(s => (
-            <div className="relative isolate overflow-clip rounded-lg bg-surface aspect-square lg:aspect-[100/138]" key={s.img}>
+            <div className="relative isolate overflow-clip rounded-lg bg-surface aspect-[100/138]" key={s.img}>
               <img className="absolute inset-0 z-0 h-full w-full max-w-none object-cover" src={s.img} width={640} height={883} alt={s.alt} loading="lazy" />
             </div>
           ))}
